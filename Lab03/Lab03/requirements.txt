@@ -1,0 +1,4 @@
+pyQt5
+requests
+flask>=2.3.2
+rsa>=4.9
