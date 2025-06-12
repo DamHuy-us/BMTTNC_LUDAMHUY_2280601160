@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Caesar Cipher</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="container">
+        <table class="table">
+            <!-- Tiêu đề -->
+            <tr>
+                <td style="text-align: center; font-weight: bold; font-size: 25px;">CAESAR CIPHER</td>
+            </tr>
+
+            <!-- Phần mã hóa -->
+            <tr>
+                <td style="font-weight: bold; color: blue;">ENCRYPTION</td>
+            </tr>
+            <tr>
+                <td>
+                    <form id="encryptForm">
+                        <div class="mb-3">
+                            <label class="form-label">Plain text:</label>
+                            <input type="text" class="form-control" id="inputPlainText" placeholder="Input Plain Text" required autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Key:</label>
+                            <input type="number" class="form-control" id="inputKeyPlain" placeholder="Input Key" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Encrypt</button>
+                    </form>
+                    <div class="mt-3">
+                        <label class="form-label font-weight-bold">Encrypted Result:</label>
+                        <textarea class="form-control" id="encryptResult" rows="2" readonly></textarea>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- Phần giải mã -->
+            <tr>
+                <td style="font-weight: bold; color: blue;">DECRYPTION</td>
+            </tr>
+            <tr>
+                <td>
+                    <form id="decryptForm">
+                        <div class="mb-3">
+                            <label class="form-label">Cipher text:</label>
+                            <input type="text" class="form-control" id="inputCipherText" placeholder="Input Cipher Text" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Key:</label>
+                            <input type="number" class="form-control" id="inputKeyCipher" placeholder="Input Key" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Decrypt</button>
+                    </form>
+                    <div class="mt-3">
+                        <label class="form-label font-weight-bold">Decrypted Result:</label>
+                        <textarea class="form-control" id="decryptResult" rows="2" readonly></textarea>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function caesarShift(str, amount) {
+            if (amount < 0) return caesarShift(str, amount + 26);
+
+            let output = '';
+
+            for (let i = 0; i < str.length; i++) {
+                let c = str[i];
+                if (c.match(/[a-z]/i)) {
+                    let code = str.charCodeAt(i);
+
+                    // Uppercase letters
+                    if (code >= 65 && code <= 90) {
+                        c = String.fromCharCode(((code - 65 + amount) % 26) + 65);
+                    }
+                    // Lowercase letters
+                    else if (code >= 97 && code <= 122) {
+                        c = String.fromCharCode(((code - 97 + amount) % 26) + 97);
+                    }
+                }
+                output += c;
+            }
+
+            return output;
+        }
+
+        // Xử lý mã hóa
+        document.getElementById('encryptForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const plainText = document.getElementById('inputPlainText').value;
+            const key = parseInt(document.getElementById('inputKeyPlain').value);
+            const encrypted = caesarShift(plainText, key);
+            document.getElementById('encryptResult').value = encrypted;
+        });
+
+        // Xử lý giải mã
+        document.getElementById('decryptForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const cipherText = document.getElementById('inputCipherText').value;
+            const key = parseInt(document.getElementById('inputKeyCipher').value);
+            const decrypted = caesarShift(cipherText, (26 - key) % 26);
+            document.getElementById('decryptResult').value = decrypted;
+        });
+    </script>
+</body>
+</html>
